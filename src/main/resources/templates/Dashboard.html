@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Blog Dashboard</title>
+	</head>
+	<body>
+		<div align="center">
+			<h1>Blogs</h1>
+			<table border="1">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Author</th>
+						<th>Excerpt</th>
+						<th>Date Published</th>
+						<th>Tag</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="post : ${listPosts} ">
+						<td th:text="${post.title}"></td>
+						<td th:text="${post.author}"></td>
+						<td th:text="${post.excerpt}"></td>
+						<td th:text="${post.publishedAt}"></td>
+						<td>
+							<table>
+								<tr th:each="tag : ${post.tags}">
+									<td th:text="${tag.name}"></td>
+								</tr>
+							</table>
+						</td>
+						<td>
+								<a th:href="@{/viewPost/{id}(id=${post.id})}">View</a>
+						</td>
+					</tr>
+					<tr>
+						<form action="/addPost">
+							<button type="submit" value="submit">Add Post</button>
+						</form>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

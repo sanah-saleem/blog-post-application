@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Blog</title>
+	</head>
+	<body>
+		<tr th:each="post, obj : ${thePost}">
+			<h1>Title : <td th:text="${post.title}"></td></h1>
+			<h3>Author : <td th:text="${post.author}"></td></h3>
+			<label>Content : </label>
+			<td th:text="${post.content}"></td>
+			<form th:action="@{/updatePost/{id}(id=${post.id})}" method="get">
+				<input type="submit" value="update"/>
+			</form>
+			<form th:action="@{/deletePost/{id}(id=${post.id})}" method="get">
+				<input type="submit" value="delete"/>
+			</form>
+			<div border:"1px solid black">
+				<h4>Comments</h4>
+				<div th:each="theComment, obj : ${post.getComments()}">
+					name : <td th:text = "${theComment.name}"></td>
+					email : <td th:text = "${theComment.email}"></td>
+					comment : <td th:text = "${theComment.comment}"></td>
+				</div>
+			</div>
+			<form th:action="@{/addComment}" th:object="${newComment}" method="post">
+		         <input type="hidden" name="postId" th:value="${post.id}" />
+		         <label>Name</label>
+		         <input type="text" name="name" th:value="${newComment?.name}" />
+		         <label>Email</label>
+		         <input type="text" name="email" th:value="${newComment?.email}" />
+		         <label>Comment</label>
+		         <input type="text" name="comment" th:value="${newComment?.comment}" />
+		         <input type="submit" value="comment">
+     		</form>
+		</tr>
+	</body>
+</html>

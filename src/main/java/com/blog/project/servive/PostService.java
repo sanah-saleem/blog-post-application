@@ -10,4 +10,5 @@ public interface PostService {
 	public Post getPost(int id);
 	public List<Post> getAllPosts();
 	public void deletePost(int id);
+	public List<Post> search(String parameter, String category);
 }

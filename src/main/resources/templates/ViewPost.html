@@ -19,9 +19,18 @@
 			<div border:"1px solid black">
 				<h4>Comments</h4>
 				<div th:each="theComment, obj : ${post.getComments()}">
-					name : <td th:text = "${theComment.name}"></td>
-					email : <td th:text = "${theComment.email}"></td>
-					comment : <td th:text = "${theComment.comment}"></td>
+					name : <td th:text = "${theComment.name}"></td>  |
+					email : <td th:text = "${theComment.email}"></td>  |
+					comment : <td th:text = "${theComment.comment}"></td>  |
+					<form th:action="@{/updateComment/{id}(id=${theComment.id})}" method="get">
+						<input type="hidden" name="postId" th:value="${post.id}" />
+						<input type="submit" value="update"/>
+					</form>
+					<form th:action="@{/deleteComment/{id}(id=${theComment.id})}" method="get">
+						<input type="hidden" name="postId" th:value="${post.id}" />
+						<input type="submit" value="delete"/>
+					</form>
+					<br>
 				</div>
 			</div>
 			<form th:action="@{/addComment}" th:object="${newComment}" method="post">

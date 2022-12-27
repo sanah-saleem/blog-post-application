@@ -1,7 +1,6 @@
 package com.blog.project.entity;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,18 +44,18 @@ public class Post {
 	
 	@CreationTimestamp
 	@Column(name = "published_at")
-	private LocalDateTime publishedAt;
+	private Timestamp publishedAt;
 	
 	@Column(name = "is_published")
 	private boolean isPublished = true;
 	
 	@CreationTimestamp
 	@Column(name = "created_at")
-	private LocalDateTime createdAt;
+	private Timestamp createdAt;
 	
 	@UpdateTimestamp
 	@Column(name = "updated_at")
-	private LocalDateTime updatedAt;
+	private Timestamp updatedAt;
 	
 	@ManyToMany(targetEntity=Tag.class, fetch=FetchType.EAGER, cascade = 
 		{CascadeType.DETACH,
@@ -70,7 +69,7 @@ public class Post {
 			inverseJoinColumns=@JoinColumn(name="tag_id"))
 	List<Tag> tags;
 	
-	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	List<Comment> comments;
 
 	public int getId() {
@@ -113,11 +112,11 @@ public class Post {
 		this.author = author;
 	}
 
-	public LocalDateTime getPublishedAt() {
+	public Timestamp getPublishedAt() {
 		return publishedAt;
 	}
 
-	public void setPublishedAt(LocalDateTime publishedAt) {
+	public void setPublishedAt(Timestamp publishedAt) {
 		this.publishedAt = publishedAt;
 	}
 
@@ -129,19 +128,19 @@ public class Post {
 		this.isPublished = isPublished;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
+	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public LocalDateTime getUpdatedAt() {
+	public Timestamp getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(LocalDateTime updatedAt) {
+	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

@@ -11,4 +11,6 @@ public interface CommentService {
 	public void deleteComment(Comment theComment, int postId);
 	
 	public List<Comment> getComments(int postId);
+	
+	public Comment getComment(int commentId);
 }

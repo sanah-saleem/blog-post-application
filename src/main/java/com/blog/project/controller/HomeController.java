@@ -44,18 +44,18 @@ public class HomeController {
 	}
 	
 	@PostMapping("/savePost")
-	public String savepost(@ModelAttribute("post") Post post, @RequestParam("id") int id, @RequestParam("tag") String tagName, Model model) {
-		System.out.println("in save post");
+	public String savepost(@ModelAttribute("post") Post post, @RequestParam("id") int id, 
+				@RequestParam("tag") String tagName, Model model) {
 		postService.addPost(post, id, tagName);
 		model.addAttribute("listPosts", postService.getAllPosts());
 		return "Dashboard";
 	}
 	
 	@GetMapping("/viewPost/{id}")
-	public String viewPost(@PathVariable("id") Integer id, Model model) {
+	public String viewPost(@PathVariable("id") Integer postId, Model model) {
 		System.out.println("in view post");
-		System.out.println(id);
-		model.addAttribute("thePost", postService.getPost(id));
+		System.out.println(postId);
+		model.addAttribute("thePost", postService.getPost(postId));
 		model.addAttribute("newComment", new Comment());
 		System.out.println("hi");
 		return "ViewPost";
@@ -78,6 +78,22 @@ public class HomeController {
 	public String addComment(@ModelAttribute("theComment") Comment theComment, @RequestParam("postId") Integer postId) {
 		System.out.println("inside addComment controller");
 		commentService.addComment(theComment, postId);
+		return "redirect:/viewPost/"+postId;
+	}
+	
+	@GetMapping("/updateComment/{id}")
+	public String updateComment(@PathVariable("id") int commentId, @RequestParam("postId") int postId, Model model) {
+		Comment theComment = commentService.getComment(commentId);
+		commentService.deleteComment(theComment, postId);
+		model.addAttribute("thePost", postService.getPost(postId));
+		model.addAttribute("newComment", theComment);
+		return "ViewPost";
+	}
+	
+	@GetMapping("/deleteComment/{id}")
+	public String deleteComment(@PathVariable("id") int commentId, @RequestParam("postId") int postId) {
+		Comment theComment = commentService.getComment(commentId);
+		commentService.deleteComment(theComment, postId);
 		return "redirect:/viewPost/"+postId;
 	}
 }

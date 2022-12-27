@@ -46,8 +46,12 @@ public class Comment {
 	@Column(name="updated_at")
 	private Timestamp updatedAt;
 	
-	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@JoinColumn(name="post_id")
+	@ManyToOne(fetch=FetchType.LAZY, cascade = 
+		{CascadeType.DETACH,
+				CascadeType.MERGE,
+				CascadeType.PERSIST,
+				CascadeType.REFRESH}) 
+	@JoinColumn(name="post_id", referencedColumnName="id")
 	private Post post;
 
 	public int getId() {

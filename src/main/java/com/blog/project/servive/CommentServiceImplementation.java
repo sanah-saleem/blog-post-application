@@ -37,7 +37,6 @@ public class CommentServiceImplementation implements CommentService {
 		commentRepository.save(theComment);
 		postRepository.save(post);
 		System.out.println("after adding comment"+post.toString());
-		
 	}
 
 	@Override
@@ -47,7 +46,6 @@ public class CommentServiceImplementation implements CommentService {
 		comments.remove(theComment);
 		post.setComments(comments);
 		postService.addPost(post, postId, tagService.getAllTags(postId));
-
 	}
 
 	@Override
@@ -56,4 +54,8 @@ public class CommentServiceImplementation implements CommentService {
 		return listComments;
 	}
 
+	@Override
+	public Comment getComment(int commentId) {
+		return commentRepository.findById(commentId).get();
+	}
 }

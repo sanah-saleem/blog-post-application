@@ -31,7 +31,6 @@ public class PostServiceImplementation implements PostService {
 			post.setExcerpt(post.getContent());
 		}
 		List<String> tagNames = Arrays.asList(tagName.split(","));
-		System.out.println("tag names : " + tagNames);
 		List<Tag> tags = tagService.addTag(tagNames);
 		post.setTags(tags);
 		postRepository.save(post);

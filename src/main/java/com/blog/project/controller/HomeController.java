@@ -96,4 +96,12 @@ public class HomeController {
 		commentService.deleteComment(theComment, postId);
 		return "redirect:/viewPost/"+postId;
 	}
+	
+	@GetMapping("/searchPost")
+	public String searchPost(@RequestParam("search") String parameter, @RequestParam("category") String category, Model model) {
+		System.out.println(category+":"+parameter);
+		System.out.println(postService.search(category, parameter));
+		model.addAttribute("listPosts", postService.search(category, parameter));
+		return "Dashboard";
+	}
 }

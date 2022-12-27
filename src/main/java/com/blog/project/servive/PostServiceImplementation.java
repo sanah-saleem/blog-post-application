@@ -56,4 +56,15 @@ public class PostServiceImplementation implements PostService {
 	public void deletePost(int id) {
 		postRepository.delete(getPost(id));
 	}
+
+	@Override
+	public List<Post> search(String category, String parameter) {
+		if(category.equals("tag"))
+			return postRepository.searchByTag(parameter);
+		if(category.equals("title"))
+			return postRepository.searchByTitle(parameter);
+		if(category.equals("author"))
+			return postRepository.searchByAuthor(parameter);
+		return null;
+	}
 }

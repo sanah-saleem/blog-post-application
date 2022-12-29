@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.blog.project.entity.Tag;
 
 public interface TagRepository extends JpaRepository<Tag, Integer>{
+	
 	@Query("select t from Tag t where t.name = :tagName")
 	public Tag findByName(@Param("tagName")String tagName);
 

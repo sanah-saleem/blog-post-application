@@ -1,6 +1,10 @@
 package com.blog.project.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,33 +35,27 @@ public class HomeController {
 	Post post;
 	
 	@GetMapping(value={"/","/Dashboard"})
-	public String viewHomePage(Model model) {
-		model.addAttribute("listPosts", postService.getAllPosts());
-		return "Dashboard";
+	public String viewHomePage( Model model) {
+		return viewPaginated( 1, "title", "asc", model);
 	}
 	
 	@GetMapping("/addPost")
 	public String addPost(Model model) {
 		model.addAttribute(post);
-		System.out.println("in add post");
 		return "AddPost";
 	}
 	
 	@PostMapping("/savePost")
-	public String savepost(@ModelAttribute("post") Post post, @RequestParam("id") int id, 
-				@RequestParam("tag") String tagName, Model model) {
-		postService.addPost(post, id, tagName);
+	public String savepost(@ModelAttribute("post") Post post, @RequestParam("tag") String tagName, Model model) {
+		postService.addPost(post, tagName);
 		model.addAttribute("listPosts", postService.getAllPosts());
 		return "Dashboard";
 	}
 	
 	@GetMapping("/viewPost/{id}")
 	public String viewPost(@PathVariable("id") Integer postId, Model model) {
-		System.out.println("in view post");
-		System.out.println(postId);
 		model.addAttribute("thePost", postService.getPost(postId));
 		model.addAttribute("newComment", new Comment());
-		System.out.println("hi");
 		return "ViewPost";
 	}
 	
@@ -76,7 +74,6 @@ public class HomeController {
 	
 	@PostMapping("/addComment")
 	public String addComment(@ModelAttribute("theComment") Comment theComment, @RequestParam("postId") Integer postId) {
-		System.out.println("inside addComment controller");
 		commentService.addComment(theComment, postId);
 		return "redirect:/viewPost/"+postId;
 	}
@@ -99,9 +96,44 @@ public class HomeController {
 	
 	@GetMapping("/searchPost")
 	public String searchPost(@RequestParam("search") String parameter, @RequestParam("category") String category, Model model) {
-		System.out.println(category+":"+parameter);
-		System.out.println(postService.search(category, parameter));
 		model.addAttribute("listPosts", postService.search(category, parameter));
+		return printPosts(model);
+	}
+	
+	@GetMapping("/page/{pageNo}")
+	public String viewPaginated( @PathVariable("pageNo") int pageNo, 
+			@RequestParam("sortField") String sortField,
+			@RequestParam("sortDirection") String sortDirection, 
+			Model model) {
+		int pageSize = 5;
+		Page<Post> page = postService.findPage(pageNo, pageSize, sortField, sortDirection);
+		List<Post> listPosts = page.getContent();
+		model.addAttribute("currentPage", pageNo);
+		model.addAttribute("totalPages", page.getTotalPages());
+		model.addAttribute("listPosts", listPosts);
+		model.addAttribute("sortField", sortField);
+		model.addAttribute("sortDirection", sortDirection);
+		model.addAttribute("reverseSortDirection", sortDirection.equals("asc")? "desc" : "asc");
+		return printPosts(model);
+	}
+	
+	public String printPosts(Model model) {
 		return "Dashboard";
 	}
+//	public String viewPaginated(List<Post> postList, int pageNo, Model model) {
+//		int pageSize = 5;
+////		Page<Post> page = postService.findPage(pageNo, pageSize);
+//		List<Post> listPosts = postService.getPosts(postList, pageNo, pageSize);
+//		int reminder = postList.size()%pageSize;
+//		int totalPages = postList.size()/pageSize;
+//		if(reminder>0) {
+//			totalPages += 1;
+//		}
+//		System.out.println(totalPages);
+//		model.addAttribute("currentPage", pageNo);
+//		model.addAttribute("totalPages", totalPages);
+//		model.addAttribute("mainListPosts", postList);
+//		model.addAttribute("listPosts", listPosts);
+//		return "Dashboard";
+//	}
 }

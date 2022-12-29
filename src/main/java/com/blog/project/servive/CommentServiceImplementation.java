@@ -45,7 +45,7 @@ public class CommentServiceImplementation implements CommentService {
 		List<Comment> comments = post.getComments();
 		comments.remove(theComment);
 		post.setComments(comments);
-		postService.addPost(post, postId, tagService.getAllTags(postId));
+		postService.addPost(post, tagService.getAllTags(postId));
 	}
 
 	@Override

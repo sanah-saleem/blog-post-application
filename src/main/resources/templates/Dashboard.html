@@ -10,10 +10,22 @@
 			<table border="1">
 				<thead>
 					<tr>
-						<th>Title</th>
-						<th>Author</th>
-						<th>Excerpt</th>
-						<th>Date Published</th>
+						<th>
+							<a th:href="'/page/'+${currentPage}+'?sortField=title&sortDirection='+${reverseSortDirection}">
+								Title</a>
+							</th>
+						<th>
+							<a th:href="'/page/'+${currentPage}+'?sortField=author&sortDirection='+${reverseSortDirection}">
+								Author</a>
+							</th>
+						<th>
+							<a th:href="'/page/'+${currentPage}+'?sortField=excerpt&sortDirection='+${reverseSortDirection}">
+								Excerpt</a>
+								</th>
+						<th>
+							<a th:href="'/page/'+${currentPage}+'?sortField=publishedAt&sortDirection='+${reverseSortDirection}">
+								Date Published</a>
+								</th>
 						<th>Tag</th>
 					</tr>
 				</thead>
@@ -39,6 +51,7 @@
 						<form action="/searchPost" method="get">
 							<input type="text" placeholder="Search.." name="search">
 							<select name="category">
+							  <option value="title">-</option>
 							  <option value="title">title</option>
 							  <option value="author">author</option>
 							  <option value="tag">tag</option>
@@ -53,6 +66,22 @@
 					</tr>
 				</tbody>
 			</table>
+			<div th:if = "${totalPages>1}">
+					<a th:if="${currentPage>1}" 
+					th:href="@{'/page/'+${currentPage-1}+'?sortField='+${sortField}+'&sortDirection='+${sortDirection}}">Prev</a>
+					<span th:unless="${currentPage>1}")>Prev</span> &nbsp;&nbsp;
+					
+					<span th:each="i: ${#numbers.sequence(1,totalPages)}">
+						<a th:if="${currentPage != i}" 
+						th:href="@{'/page/'+${i}+'?sortField='+${sortField}+'&sortDirection='+${sortDirection}}">[[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp;&nbsp;
+						</form>
+					</span>
+					
+					<a th:if="${currentPage<totalPages}" 
+					th:href="@{'/page/'+${currentPage+1}+'?sortField='+${sortField}+'&sortDirection='+${sortDirection}}">Next</a>
+					<span th:unless="${currentPage<totalPages}")>Next</span>
+			</div>
 		</div>
 	</body>
 </html>

@@ -27,7 +27,7 @@ import jakarta.persistence.Table;
 public class Post {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY )
-	@Column(name = "id")
+	@Column(name = "id", insertable=false, updatable=false)
 	private int id;
 	
 	@Column(name = "title")
@@ -43,14 +43,14 @@ public class Post {
 	private String author;
 	
 	@CreationTimestamp
-	@Column(name = "published_at")
+	@Column(name = "published_at", updatable=false)
 	private Timestamp publishedAt;
 	
 	@Column(name = "is_published")
-	private boolean isPublished = true;
+	private boolean isPublished = false;
 	
 	@CreationTimestamp
-	@Column(name = "created_at")
+	@Column(name = "created_at", updatable=false)
 	private Timestamp createdAt;
 	
 	@UpdateTimestamp
@@ -62,7 +62,6 @@ public class Post {
 			CascadeType.MERGE,
 			CascadeType.PERSIST,
 			CascadeType.REFRESH})
-	
 	@JoinTable(
 			name="post_tag",
 			joinColumns=@JoinColumn(name="post_id"),
@@ -116,8 +115,8 @@ public class Post {
 		return publishedAt;
 	}
 
-	public void setPublishedAt(Timestamp publishedAt) {
-		this.publishedAt = publishedAt;
+	public void setPublishedAt(Timestamp dateTime) {
+		this.publishedAt = dateTime;
 	}
 
 	public boolean isPublished() {
@@ -132,16 +131,16 @@ public class Post {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
+	public void setCreatedAt(Timestamp dateTime) {
+		this.createdAt = dateTime;
 	}
 
 	public Timestamp getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
-		this.updatedAt = updatedAt;
+	public void setUpdatedAt(Timestamp dateTime) {
+		this.updatedAt = dateTime;
 	}
 
 	public List<Tag> getTags() {

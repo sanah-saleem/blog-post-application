@@ -3,46 +3,68 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Blog</title>
+		<style>
+			.content {
+				border-color: black;
+				margin: 0px 100px;
+			}
+		</style>
 	</head>
-	<body>
+	<div align="center">
 		<tr th:each="post, obj : ${thePost}">
-			<h1>Title : <td th:text="${post.title}"></td></h1>
-			<h3>Author : <td th:text="${post.author}"></td></h3>
-			<label>Content : </label>
-			<td th:text="${post.content}"></td>
+			<h1><td th:text="${post.title}"></td></h1>
+			<h3>A blog by <td th:text="${post.author}"></td></h3>
+			<div class=""content>
+			<td th:text="${post.content}"></td><br>
+			</div>
+			<div th:if="${!username.equals(post.author)}">
+			<form th:if="${role.equals('ADMIN')}" th:action="@{/updatePost/{id}(id=${post.id})}" method="get">
+				<input type="submit" value="update"/>
+			</form>
+			<form th:if="${role.equals('ADMIN')}" th:action="@{/deletePost/{id}(id=${post.id})}" method="get">
+				<input type="submit" value="delete"/>
+			</form>
+			</div>
+			<div th:if="${username.equals(post.author)}">
 			<form th:action="@{/updatePost/{id}(id=${post.id})}" method="get">
 				<input type="submit" value="update"/>
 			</form>
 			<form th:action="@{/deletePost/{id}(id=${post.id})}" method="get">
 				<input type="submit" value="delete"/>
 			</form>
-			<div border:"1px solid black">
+			</div>
+			
+			<div th:if="${!post.comments.isEmpty()}">
 				<h4>Comments</h4>
 				<div th:each="theComment, obj : ${post.getComments()}">
-					name : <td th:text = "${theComment.name}"></td>  |
-					email : <td th:text = "${theComment.email}"></td>  |
-					comment : <td th:text = "${theComment.comment}"></td>  |
-					<form th:action="@{/updateComment/{id}(id=${theComment.id})}" method="get">
-						<input type="hidden" name="postId" th:value="${post.id}" />
-						<input type="submit" value="update"/>
-					</form>
+					<!--<label>name</label> <input type="text" th:value="${theComment.name}" readonly><br>
+					<label>comment</label><input type="" th:value = "${theComment.comment}" readonly><br>-->
+					<!--<form th:action="@{/updateComment/{id}(id=${theComment.id})}" method="get">
+						<input type="hidden" name="postId" th:value="${post.id}" >
+						<input type="submit" value="update">
+					</form>-->
 					<form th:action="@{/deleteComment/{id}(id=${theComment.id})}" method="get">
 						<input type="hidden" name="postId" th:value="${post.id}" />
-						<input type="submit" value="delete"/>
+						<td th:text="${theComment.name}"></td>&nbsp;:&nbsp;
+						<td th:text="${theComment.comment}"></td>&nbsp;
+						<div th:if="${!username.equals(theComment.name)}">
+							<span th:if="${role.equals('ADMIN')}">
+								<input type="submit" value="delete"/>
+							</span>
+						</div>
+						<input th:if="${username.equals(theComment.name)}" type="submit" value="delete"/>
 					</form>
 					<br>
 				</div>
 			</div>
-			<form th:action="@{/addComment}" th:object="${newComment}" method="post">
+			<form th:if="${!username.equals('nil')}" th:action="@{/addComment}" th:object="${newComment}" method="post">
 		         <input type="hidden" name="postId" th:value="${post.id}" />
-		         <label>Name</label>
-		         <input type="text" name="name" th:value="${newComment?.name}" />
-		         <label>Email</label>
-		         <input type="text" name="email" th:value="${newComment?.email}" />
-		         <label>Comment</label>
-		         <input type="text" name="comment" th:value="${newComment?.comment}" />
+		         <label>Comment</label><br>
+		         <input type="textarea" name="comment" th:value="${newComment?.comment}" /><br>
 		         <input type="submit" value="comment">
      		</form>
 		</tr>
+		<a href="/Dashboard">Dashboard</a>
+		</div>
 	</body>
 </html>

@@ -4,17 +4,31 @@
 		<meta charset="UTF-8">
 		<title>Add Post</title>
 	</head>
+	<style>
+		input {
+			width:350px;
+		}
+		#textarea {
+			height:250px;
+		}
+	</style>
 	<body>
-		<form th:action="@{/savePost}" th:object="${post}" method="post">
-			<input type="hidden" name="id" th:value="${post.id}" >
-			<label>Title</label>
-			<input type="text" name="title" th:value="${post?.title}"/>
-			<label>Author</label>
-			<input type="text" name="author" th:value="${post?.author}"/>
-			<label>Content</label>
-			<input id="textarea" type="text" name="content" th:value="${post?.content}"/>
-			<label>Tag</label>
-			<input type="text" name="tag" th:value="${tags}">
-			<button type="submit" value="submit">submit</button>
-		</form>
+		
+			<form th:action="@{/savePost}" th:object="${post}" method="post">
+				<div align="center">
+					<input type="hidden" name="id" th:value="${post.id}" >
+					<label>Title</label><br>
+					<input type="text" name="title" th:value="${post?.title}"/>
+					<br><br>
+					<label>Content</label><br>
+					<input id="textarea" type="text" name="content" th:value="${post?.content}"/>
+					<br><br>
+					<label>Tag</label><br>
+					<input type="text" name="tag" th:value="${tags}"><br><br>
+					<button type="submit" value="submit">submit</button><br><br>
+					<a href="/Dashboard">Dashboard</a>
+				</div>
+			</form>
+			
+		
 	</body>

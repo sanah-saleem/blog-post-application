@@ -28,15 +28,10 @@ public class CommentServiceImplementation implements CommentService {
 	@Override
 	public void addComment(Comment theComment, int postId) {
 		Post post = postService.getPost(postId);
-		System.out.println("before adding comment"+post.toString());
-//		List<Comment> comments = post.getComments();  
-//		commentRepository.save(theComment);
+		theComment.setPost(post);
 		post.addComment(theComment);
-//		post.setComments(comments);
-//		postService.addPost(post, postId, tagService.getAllTags(postId));
 		commentRepository.save(theComment);
-		postRepository.save(post);
-		System.out.println("after adding comment"+post.toString());
+//		postRepository.save(post);
 	}
 
 	@Override

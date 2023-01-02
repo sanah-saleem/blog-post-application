@@ -27,15 +27,12 @@ public class TagServiceImplementation implements TagService {
 			Tag tag = new Tag();
 			if(!checkTag(tagName)) {
 				tag.setName(tagName);
-				tagRepository.save(tag);
+//				tagRepository.save(tag);
 				tags.add(tag);
-				System.out.println("tag id : "+tag.getId());
 			}
 			else {
 				tag = tagRepository.findByName(tagName);
 				tags.add(tag);
-				System.out.println("tag : "+tag);
-				System.out.println(tag.getId());
 			}
 		}
 		return tags;

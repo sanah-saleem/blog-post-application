@@ -3,6 +3,7 @@ package com.blog.project.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,13 +26,23 @@ public class BlogSecurityConfig extends WebSecurityConfigurerAdapter{
         http
         	.csrf().disable()
             .authorizeRequests()
-            .antMatchers("/login","/register","/saveUser","/","/Dashboard","/viewPost/{id}","/searchPost","/searchPost/{pageNo}","/page/{pageNo}")
-            .permitAll()
-            .antMatchers("/**").hasAnyRole("ADMIN","USER")
+            	.antMatchers("/login","/register","/saveUser","/","/Dashboard","/viewPost/{id}","/searchPost","/searchPost/{pageNo}","/page/{pageNo}")
+            	.permitAll()
+            	.antMatchers(HttpMethod.GET,"/api/**")
+            	.permitAll()
+            	.antMatchers(HttpMethod.POST,"/api/**")
+            	.authenticated()
+            	.antMatchers(HttpMethod.PUT,"/api/**")
+            	.authenticated()
+            	.antMatchers(HttpMethod.DELETE,"/api/**")
+            	.authenticated()
+            	.antMatchers("/**")
+            	.hasAnyRole("ADMIN","USER")
             .anyRequest()
             .authenticated()
             .and()
-//            .httpBasic(); 
+            .httpBasic()
+            .and()
             .formLogin()
             .loginPage("/login")
             .loginProcessingUrl("/doLogin")

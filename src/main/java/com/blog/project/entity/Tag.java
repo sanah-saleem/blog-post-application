@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -29,7 +31,7 @@ public class Tag {
 	@Column(name="updated_at")
 	private Timestamp updatedAt;
 	
-	
+	@JsonIgnore
 	@ManyToMany(targetEntity=Post.class, fetch=FetchType.LAZY, cascade = 
 		{CascadeType.DETACH,
 			CascadeType.MERGE,
@@ -42,47 +44,38 @@ public class Tag {
 		return id;
 	}
 
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
 
 	public String getName() {
 		return name;
 	}
 
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
 
-
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
-
 
 	public Timestamp getUpdatedAt() {
 		return updatedAt;
 	}
 
-
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 
 	public List<Post> getPosts() {
 		return posts;
 	}
 
-	
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}

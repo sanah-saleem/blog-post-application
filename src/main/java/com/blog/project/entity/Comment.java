@@ -7,6 +7,8 @@ import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "comment")
 public class Comment {
@@ -33,6 +35,7 @@ public class Comment {
 	@Column(name="updated_at")
 	private Timestamp updatedAt;
 	
+	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY, cascade = 
 		{CascadeType.DETACH,
 				CascadeType.MERGE,

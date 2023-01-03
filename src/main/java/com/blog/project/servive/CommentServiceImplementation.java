@@ -35,6 +35,15 @@ public class CommentServiceImplementation implements CommentService {
 	}
 
 	@Override
+	public void deleteComment(int commentId, int postId) {
+		Post post = postService.getPost(postId);
+		List<Comment> comments = post.getComments();
+		comments.remove(commentRepository.findById(commentId).get());
+		post.setComments(comments);
+		postService.addPost(post, tagService.getAllTags(postId));
+	}
+		
+	@Override
 	public void deleteComment(Comment theComment, int postId) {
 		Post post = postService.getPost(postId);
 		List<Comment> comments = post.getComments();

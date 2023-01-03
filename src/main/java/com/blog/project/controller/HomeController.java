@@ -74,15 +74,14 @@ public class HomeController {
 	
 	@GetMapping("/addPost")
 	public String addPost(Model model, Principal principal) {
-		
-		post.setAuthor(principal.getName());
 		model.addAttribute("post",post);
 		return "AddPost";
-		
 	}
 	
 	@PostMapping("/savePost")
-	public String savepost(@ModelAttribute("post") Post post, @RequestParam("tag") String tagName, Model model) {
+	public String savepost(@ModelAttribute("post") Post post, @RequestParam("tag") String tagName, 
+			Principal principal, Model model) {
+		post.setAuthor(principal.getName());
 		postService.addPost(post, tagName);
 		return viewHomePage(model);
 	}
